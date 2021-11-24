@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#6DACDC"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="12dp"
+    android:paddingLeft="12dp"
+    android:paddingEnd="12dp"
+    android:paddingRight="12dp">
+
+    <ImageView
+        android:id="@+id/notification_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ch_trash" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/notification_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_notification_title"
+            android:textStyle="bold"
+            android:textSize="14dp"/>
+
+        <TextView
+            android:id="@+id/notification_contents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_notification_content"
+            android:textSize="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/ly_title_balance_contents_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/notification_roulette_name"
+                style="@style/Avatye.Widget.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:textColor="#212121"
+                android:textSize="12sp"
+                tools:text="캐시룰렛" />
+
+
+            <ImageView
+                style="@style/Avatye.Widget.ImageView"
+                android:layout_width="1dp"
+                android:layout_height="9dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                android:background="#C4C4C4" />
+
+
+            <TextView
+                android:id="@+id/notification_ticket_balance"
+                style="@style/Avatye.Widget.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:textColor="#212121"
+                android:textSize="11sp"
+                tools:text="티켓23장" />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/ly_box_button_frame"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp">
+
+
+        <ImageView
+            android:id="@+id/notification_box_condition_frame"
+            style="@style/Avatye.Widget.ImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/axcr_drawable_notification_box_condition_frame_on" />
+
+
+        <TextView
+            android:id="@+id/notification_box_condition"
+            style="@style/Avatye.Widget.TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|center_horizontal"
+            android:gravity="center|bottom"
+            android:includeFontPadding="false"
+            android:paddingBottom="5dp"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:text="1" />
+
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="10dp"
+        android:layout_height="match_parent" />
+
+
+    <FrameLayout
+        android:id="@+id/ly_ticket_button_frame"
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+
+
+        <ImageView
+            android:id="@+id/notification_ticket_condition_frame"
+            style="@style/Avatye.Widget.ImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/axcr_drawable_notification_ticket_condition_frame_on" />
+
+
+        <TextView
+            android:id="@+id/notification_ticket_condition"
+            style="@style/Avatye.Widget.TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|center_horizontal"
+            android:gravity="center|bottom"
+            android:includeFontPadding="false"
+            android:paddingBottom="5dp"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:text="1" />
+
+
+    </FrameLayout>
+
+
+</LinearLayout>

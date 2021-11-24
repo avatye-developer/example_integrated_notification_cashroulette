@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
+}
+
+android {
+    compileSdk 30
+    buildToolsVersion "30.0.2"
+    defaultConfig {
+        applicationId "com.example.integrated_notification_cashroulette"
+        minSdkVersion 16
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:$ktxcore_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "androidx.multidex:multidex:$multidex_version"
+    implementation "com.google.android.material:material:$material_version"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    // cash roulette sdk
+    implementation "org.bitbucket.avatye:sdk-cash-roulette:$cashroulette_sdk_version"
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="example-cashroulette-java/src/main/res/drawable/button_base_selector.xml" value="0.44895833333333335" />
+        <entry key="example-cashroulette-java/src/main/res/drawable/ic_multicolor_avatye_ci.xml" value="0.44895833333333335" />
+        <entry key="example-cashroulette-java/src/main/res/font/cashroulette_res_font.xml" value="0.4630208333333333" />
+        <entry key="example-cashroulette-java/src/main/res/layout/activity_intro.xml" value="0.4817708333333333" />
+        <entry key="example-cashroulette-java/src/main/res/layout/activity_main.xml" value="0.6257530120481928" />
+        <entry key="example-cashroulette-java/src/main/res/layout/layout_notification_custom_view.xml" value="0.70625" />
+        <entry key="example-cashroulette-kotlin/src/main/res/drawable/button_base_selector.xml" value="0.44895833333333335" />
+        <entry key="example-cashroulette-kotlin/src/main/res/drawable/ic_multicolor_avatye_ci.xml" value="0.44895833333333335" />
+        <entry key="example-cashroulette-kotlin/src/main/res/drawable/shape_rect_enabled.xml" value="0.44895833333333335" />
+        <entry key="example-cashroulette-kotlin/src/main/res/font/cashroulette_res_font.xml" value="0.4630208333333333" />
+        <entry key="example-cashroulette-kotlin/src/main/res/layout/activity_intro.xml" value="0.4817708333333333" />
+        <entry key="example-cashroulette-kotlin/src/main/res/layout/activity_main.xml" value="0.5523952095808383" />
+        <entry key="example-cashroulette-kotlin/src/main/res/layout/layout_notification_custom_view.xml" value="0.70625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

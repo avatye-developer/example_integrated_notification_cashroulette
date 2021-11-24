@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".MainActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/wrap_auth"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/avatye_cashroulette_font"
+                android:text="인증하기"
+                android:textColor="#212121"
+                android:textSize="24dp" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/avatye_cashroulette_font"
+                android:text="사용할 아이디(메일주소)를 입력하세요"
+                android:textColor="#212121"
+                android:textSize="14dp" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/user_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:background="#FFFFFF"
+                android:fontFamily="@font/avatye_cashroulette_font"
+                android:hint="example@example.com"
+                android:singleLine="true"
+                android:textSize="26dp"
+                tools:text="12345" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:background="#cecece" />
+
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_auth"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@color/black"
+            android:fontFamily="@font/avatye_cashroulette_font"
+            android:text="인증하기"
+            android:textColor="#FFFFFF" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrap_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/cashroulette_res_font"
+            android:text="인증정보"
+            android:textColor="#212121"
+            android:textSize="24dp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/profile_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/cashroulette_res_font"
+            android:textColor="#212121"
+            android:textSize="18dp"
+            tools:text="email@email.com" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/ticket_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_id"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="16dp"
+            android:drawableEnd="@drawable/refresh_24x24"
+            android:drawableRight="@drawable/refresh_24x24"
+            android:fontFamily="@font/cashroulette_res_font"
+            android:textColor="#212121"
+            android:textSize="18dp"
+            tools:text="총 티켓 : " />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/ticket_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ticket_balance"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="16dp"
+            android:drawableEnd="@drawable/refresh_24x24"
+            android:drawableRight="@drawable/refresh_24x24"
+            android:fontFamily="@font/cashroulette_res_font"
+            android:textColor="#212121"
+            android:textSize="18dp"
+            tools:text="받을 수 있는 티켓 : " />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/notibar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="파트너사 노티바 설정"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <Switch
+            android:id="@+id/sw_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notibar_title"
+            android:layout_centerInParent="true"
+            android:switchMinWidth="60dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_roulette"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/button_base_selector"
+            android:fontFamily="@font/cashroulette_res_font"
+            android:gravity="center"
+            android:text="시작하기"
+            android:textColor="#FFFFFF"
+            android:textSize="14dp" />
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,3 @@
+rootProject.name = "integrated_notification_cashroulette"
+include ':example-cashroulette-kotlin'
+include ':example-cashroulette-java'
