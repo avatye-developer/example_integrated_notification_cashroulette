@@ -108,8 +108,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             setNotificationService(intent, isChecked);
 
-            /** 파트너사 Notification Status 저장 */
-            CashRouletteSDK.HostNotification.setHostNotificationEnabled(context = MainActivity.this, enabled = isChecked);
+            /**
+             * 파트너사의 '알림창 상태바' 활성 상태를 설정합니다.
+             * 파트너사읭 '알림창 상타바'의 활성 상태가 변경 된다면 해당 메서드를 통해 활성 여부를 전달해야 합니다.
+             */
+            NotificationIntegrationSDK.setAppNotificationEnabled(this, isChecked);
         });
     }
 

@@ -14,27 +14,24 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.avatye.cashroulette.CashRouletteSDK;
 import com.avatye.cashroulette.ITicketCount;
 
 
 public class NotificationService extends Service {
     public static final String NAME = NotificationService.class.getSimpleName();
 
-    public static String channelId = "cashroulette-test";
-    public static String channelName = "캐시룰렛-테스트";
-    public static int notificationID = 903;
+    public static String channelId = "partner_notification_test";
+    public static String channelName = "파트너사앱-알림창-상태바";
+    public static int notificationID = 901;
 
     // region { ticket-field }
-    String ticketBalance = "";
-    String ticketCondition = "";
-    int ticketDrawable = 0;
+    int ticketBalance = 0;
+    int ticketCondition = 0;
     // endregion
 
     // region { ticket-box-field }
-    String ticketBoxCondition = "";
-    int ticketBoxDrawable = 0;
-    PendingIntent pendingIntent = null;
+    int ticketBoxCondition = 0;
+    PendingIntent ticketBoxPendingIntent = null;
     // endregion
 
     // region { CashRoulette-Notification-status }
@@ -59,7 +56,7 @@ public class NotificationService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterNotification();
-        CashRouletteSDK.HostNotification.unRegisterNotificationUpdateReceiver(this);
+        NotificationIntegrationSDK.unRegisterNotificationUpdateReceiver(this);
     }
 
 
@@ -68,13 +65,14 @@ public class NotificationService extends Service {
         if (intent != null) {
             registerNotification();
 
-            CashRouletteSDK.HostNotification.registerNotificationUpdateReceiver(this @NotificationService,object:
-            IUpdateNotification {
-                override fun onTicketChanged() {
+            NotificationIntegrationSDK.registerNotificationUpdateReceiver(this, new IUpdateNotification() {
+                @Override
+                public void onTicketChanged() {
                     checkTicketCondition(true);
                 }
 
-                override fun onStatusChanged(isActive:Boolean){
+                @Override
+                public void onStatusChanged(boolean isActive) {
                     cashRouletteNotificationEnabled = isActive;
                     updateNotification();
                 }
@@ -87,7 +85,7 @@ public class NotificationService extends Service {
 
     private void registerNotification() {
         // get CashRoulette enable
-        cashRouletteNotificationEnabled = CashRouletteSDK.HostNotification.getCashRouletteNotificationEnabled();
+        cashRouletteNotificationEnabled = NotificationIntegrationSDK.getSDKNotificationEnabled()
         startForeground(notificationID, makeNotificationBuilder().build());
     }
 
@@ -137,17 +135,23 @@ public class NotificationService extends Service {
         rv.setTextViewText(R.id.notification_title, getString(R.string.str_notification_title));
         rv.setTextViewText(R.id.notification_contents, getString(R.string.str_notification_content));
         rv.setTextViewText(R.id.notification_roulette_name, getString(R.string.str_notification_cashroulette_name));
-        rv.setTextViewText(R.id.notification_ticket_balance, "티켓 ${ticketBalance}장");
+        rv.setTextViewText(R.id.notification_ticket_balance, "티켓 " + ticketBalance + "장");
 
         // region {Ticket}
-        rv.setImageViewResource(R.id.notification_ticket_condition_frame, ticketDrawable);
-        rv.setTextViewText(R.id.notification_ticket_condition, ticketCondition);
+        rv.setImageViewResource(
+                R.id.notification_ticket_condition_frame,
+                ticketCondition > 0 ? R.drawable.axcr_drawable_notification_ticket_condition_frame_on : R.drawable.axcr_drawable_notification_ticket_condition_frame_off
+        );
+        rv.setTextViewText(R.id.notification_ticket_condition, String.valueOf(ticketCondition));
         // endregion
 
         //region {TicketBox}
-        rv.setImageViewResource(R.id.notification_box_condition_frame, ticketBoxDrawable);
-        rv.setTextViewText(R.id.notification_box_condition, ticketBoxCondition);
-        rv.setOnClickPendingIntent(R.id.notification_box_condition_frame, pendingIntent);
+        rv.setImageViewResource(
+                R.id.notification_box_condition_frame,
+                ticketBoxCondition > 0 ? R.drawable.axcr_drawable_notification_box_condition_frame_on : R.drawable.axcr_drawable_notification_box_condition_frame_off
+        );
+        rv.setTextViewText(R.id.notification_box_condition, String.valueOf(ticketBoxCondition));
+        rv.setOnClickPendingIntent(R.id.notification_box_condition_frame, ticketBoxPendingIntent);
         // endregion
 
         return rv;
@@ -155,28 +159,30 @@ public class NotificationService extends Service {
 
 
     private void checkTicketCondition(Boolean needUpdate) {
-        CashRouletteSDK.HostNotification.getTicketCondition(listener = object :ITicketCount {
-            override fun callback(balance:Int, condition:Int, ticketImage:Int){
-                this.ticketBalance = balance.toString();
-                this.ticketCondition = condition.toString();
-                this.ticketDrawable = ticketImage;
-                checkTicketBoxCondition(() -> {
-                    if (needUpdate) {
-                        updateNotification();
+        NotificationIntegrationSDK.getTicketCondition(new ITicketCount() {
+            @Override
+            public void callback(int balance, int condition) {
+                ticketBalance = balance;
+                ticketCondition = condition;
+                checkTicketBoxCondition(new IBoxCondition() {
+                    @Override
+                    public void update() {
+                        if (needUpdate) {
+                            updateNotification();
+                        }
                     }
                 });
             }
-        })
+        });
     }
 
-    private void checkTicketBoxCondition(IBoxCondition boxCondition) {
-        CashRouletteSDK.HostNotification.getTicketBoxCondition(this, @NotificationService,listener = object :ITicketBoxCount {
-            override fun callback(condition:Int, ticketBoxImage:Int, pendingIntent:PendingIntent ?){
-                this.ticketBoxCondition = condition.toString();
-                this.ticketBoxDrawable = ticketBoxImage;
-                this.pendingIntent = pendingIntent;
-                updateNotification();
-                boxCondition.update();
+    private void checkTicketBoxCondition(IBoxCondition iBoxCondition) {
+        NotificationIntegrationSDK.getTicketBoxCondition(new ITicketBoxCount() {
+            @Override
+            public void callback(int condition, @Nullable PendingIntent pendingIntent) {
+                ticketBoxCondition = condition;
+                ticketBoxPendingIntent = pendingIntent;
+                iBoxCondition.update();
             }
         });
     }

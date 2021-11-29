@@ -16,15 +16,13 @@ import com.avatye.library.support.core.log.LogTracer
 class NotificationService : Service() {
 
     // region { ticket-field }
-    var ticketBalance: String = ""
-    var ticketCondition: String = ""
-    var ticketDrawable: Int = 0
+    var ticketBalance: Int = 0
+    var ticketCondition: Int = 0
     // endregion
 
     // region { ticket-box-field }
-    var ticketBoxCondition: String = ""
-    var ticketBoxDrawable: Int = 0
-    var pendingIntent: PendingIntent? = null
+    var ticketBoxCondition: Int = 0
+    var ticketBoxPendingIntent: PendingIntent? = null
     // endregion
 
     // region { CashRoulette-Notification-status }
@@ -32,23 +30,30 @@ class NotificationService : Service() {
     // endregion
 
     companion object {
-        const val channelId: String = "cashroulette-test"
-        private const val channelName: String = "캐시룰렛-테스트"
-        private const val notificationID: Int = 903
+        const val channelId: String = "partner_notification_test"
+        private const val channelName: String = "파트너사앱-알림창-상태바"
+        private const val notificationID: Int = 901
     }
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
+            /** Init Service */
             registerNotification()
 
-            CashRouletteSDK.HostNotification.registerNotificationUpdateReceiver(context = this@NotificationService, object : IUpdateNotification {
+            /**
+             * 파트너사의 '알림창 상태바'에 표시되는 소유티켓수량, 받을 수 있는 티켓, 박스의 수량, 캐시룰렛 '알림창 상태바' 상태값을 이벤트로 전달 합니다.
+             * 이벤트를 통해 전달되는 값을 통해 '알림창 상태바'의 정보를 갱신 할 수 있습니다.
+             * 사용중인 '알림창 상태바' 서비스에 등록 합니다.
+             */
+            NotificationIntegrationSDK.registerNotificationUpdateReceiver(context = this@NotificationService, object : IUpdateNotification {
                 override fun onTicketChanged() {
+                    LogTracer.i { "NotificationService -> onStartCommand -> registerNotificationUpdateReceiver -> onTicketChanged" }
                     checkTicketCondition(needUpdate = true)
                 }
 
                 override fun onStatusChanged(isActive: Boolean) {
-                    LogTracer.i { "NotificationService -> onStartCommand -> registerNotificationUpdateReceiver -> { isUpdateEnable failed, CashRoulette-NotificationEnabled: $isActive }" }
+                    LogTracer.i { "NotificationService -> onStartCommand -> registerNotificationUpdateReceiver -> onStatusChanged { CashRoulette-NotificationEnabled: $isActive }" }
                     cashRouletteNotificationEnabled = isActive
                     updateNotification()
                 }
@@ -60,7 +65,9 @@ class NotificationService : Service() {
 
     override fun onDestroy() {
         unregisterNotification()
-        CashRouletteSDK.HostNotification.unRegisterNotificationUpdateReceiver(this@NotificationService)
+
+        /** 등록된 리시버를 해제합니다. */
+        NotificationIntegrationSDK.unregisterNotificationUpdateReceiver(this@NotificationService)
         super.onDestroy()
     }
 
@@ -70,8 +77,9 @@ class NotificationService : Service() {
     }
 
     private fun registerNotification() {
-        // get CashRoulette enable
-        cashRouletteNotificationEnabled = CashRouletteSDK.HostNotification.getCashRouletteNotificationEnabled()
+        /** 캐시룰렛의 '알림창 상태바' 사용 여부를 반환 합니다.*/
+        cashRouletteNotificationEnabled = NotificationIntegrationSDK.getSDKNotificationEnabled()
+
         startForeground(notificationID, makeNotificationBuilder().build())
     }
 
@@ -137,16 +145,30 @@ class NotificationService : Service() {
             this.setTextViewText(R.id.notification_ticket_balance, "티켓 ${ticketBalance}장")
 
             // region {Ticket}
-            this.setImageViewResource(R.id.notification_ticket_condition_frame, ticketDrawable)
-            this.setTextViewText(R.id.notification_ticket_condition, ticketCondition)
+            this.setImageViewResource(
+                R.id.notification_ticket_condition_frame,
+                if (ticketCondition > 0) {
+                    R.drawable.axcr_drawable_notification_ticket_condition_frame_on
+                } else {
+                    R.drawable.axcr_drawable_notification_ticket_condition_frame_off
+                }
+            )
+            this.setTextViewText(R.id.notification_ticket_condition, ticketCondition.toString())
             // endregion
 
             //region {TicketBox}
-            this.setImageViewResource(R.id.notification_box_condition_frame, ticketBoxDrawable)
-            this.setTextViewText(R.id.notification_box_condition, ticketBoxCondition)
+            this.setImageViewResource(
+                R.id.notification_box_condition_frame,
+                if (ticketBoxCondition > 0) {
+                    com.avatye.cashroulette.R.drawable.axcr_drawable_notification_box_condition_frame_on
+                } else {
+                    com.avatye.cashroulette.R.drawable.axcr_drawable_notification_box_condition_frame_off
+                }
+            )
+            this.setTextViewText(R.id.notification_box_condition, ticketBoxCondition.toString())
             this.setOnClickPendingIntent(
                 R.id.notification_box_condition_frame,
-                pendingIntent
+                ticketBoxPendingIntent
             )
             // endregion
         }
@@ -163,11 +185,16 @@ class NotificationService : Service() {
 
 
     private fun checkTicketCondition(needUpdate: Boolean) {
-        CashRouletteSDK.HostNotification.getTicketCondition(listener = object : ITicketCount {
-            override fun callback(balance: Int, condition: Int, ticketImage: Int) {
-                ticketBalance = balance.toString()
-                ticketCondition = condition.toString()
-                ticketDrawable = ticketImage
+        /**
+         * 티켓 정보를 반환합니다.
+         * balance: 소유 티켓 수
+         * condition: 받을 수 있는 티켓 수 (터치티켓 + 동영상티켓)
+         * condition <= 0 : Dimmed 이미지를 사용해 주세요.
+         */
+        NotificationIntegrationSDK.getTicketCondition(listener = object : ITicketCount {
+            override fun callback(balance: Int, condition: Int) {
+                ticketBalance = balance
+                ticketCondition = condition
                 checkTicketBoxCondition {
                     if (needUpdate) {
                         updateNotification()
@@ -178,13 +205,18 @@ class NotificationService : Service() {
     }
 
 
-    private fun checkTicketBoxCondition(updateNotification: () -> Unit) {
-        CashRouletteSDK.HostNotification.getTicketBoxCondition(context = this@NotificationService, listener = object : ITicketBoxCount {
-            override fun callback(condition: Int, ticketBoxImage: Int, pendingIntent: PendingIntent?) {
-                ticketBoxCondition = condition.toString()
-                ticketBoxDrawable = ticketBoxImage
-                this@NotificationService.pendingIntent = pendingIntent
-                updateNotification()
+    private fun checkTicketBoxCondition(callback: () -> Unit) {
+        /**
+         * 티켓박스 정보를 반환합니다.
+         * condition: 받을 수 있는 티켓박스 수
+         * condition <= 0 : Dimmed 이미지를 사용해 주세요.
+         * pendingIntent: 아이콘 클릭시 처리할 동작이 전달 됩니다. (티켓박스 수령 화면 이동)
+         */
+        NotificationIntegrationSDK.getTicketBoxCondition(listener = object : ITicketBoxCount {
+            override fun callback(condition: Int, pendingIntent: PendingIntent?) {
+                ticketBoxCondition = condition
+                ticketBoxPendingIntent = pendingIntent
+                callback()
             }
         })
     }

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../.gradle/caches/transforms-3/dfe2473314fd7e72da69d03a339c0291/transformed/jetified-sdk-cash-roulette-2021.11.2/res/drawable-anydpi-v24/axcr_drawable_notification_box_condition_frame_on.xml" value="0.5869791666666667" />
         <entry key="example-cashroulette-java/src/main/res/drawable/button_base_selector.xml" value="0.44895833333333335" />
         <entry key="example-cashroulette-java/src/main/res/drawable/ic_multicolor_avatye_ci.xml" value="0.44895833333333335" />
         <entry key="example-cashroulette-java/src/main/res/font/cashroulette_res_font.xml" value="0.4630208333333333" />
