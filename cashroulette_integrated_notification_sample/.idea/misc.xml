@@ -6,6 +6,8 @@
         <entry key="../../../../.gradle/caches/transforms-3/dfe2473314fd7e72da69d03a339c0291/transformed/jetified-sdk-cash-roulette-2021.11.2/res/drawable-anydpi-v24/axcr_drawable_notification_box_condition_frame_on.xml" value="0.5869791666666667" />
         <entry key="example-cashroulette-java/src/main/res/drawable/button_base_selector.xml" value="0.44895833333333335" />
         <entry key="example-cashroulette-java/src/main/res/drawable/ic_multicolor_avatye_ci.xml" value="0.44895833333333335" />
+        <entry key="example-cashroulette-java/src/main/res/drawable/ic_ticket.xml" value="0.7546875" />
+        <entry key="example-cashroulette-java/src/main/res/drawable/ic_ticketbox_disable.xml" value="0.415625" />
         <entry key="example-cashroulette-java/src/main/res/font/cashroulette_res_font.xml" value="0.4630208333333333" />
         <entry key="example-cashroulette-java/src/main/res/layout/activity_intro.xml" value="0.4817708333333333" />
         <entry key="example-cashroulette-java/src/main/res/layout/activity_main.xml" value="0.6257530120481928" />
@@ -20,7 +22,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

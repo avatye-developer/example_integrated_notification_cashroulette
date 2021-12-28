@@ -11,7 +11,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Integrated_notification_cashroulette"
+        android:theme="@style/Theme.AndroidSDKCashRouletteExample"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
         <!-- region { KEYS } -->
@@ -23,9 +23,16 @@
             android:name="avatye_appsecret"
             android:value="c395dbe200ad4493ade96fb92c988fcf1c8df2d3687d49a9ab6f31f7c05e2bf4" />
         <!-- endregion -->
+
+        <!-- region { service } -->
+        <service android:name=".NotificationService"/>
+        <!-- endregion -->
+
+        <!-- region { activity } -->
         <activity
             android:name=".IntroActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,7 +40,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"/>
+        <!-- endregion -->
     </application>
-
 </manifest>

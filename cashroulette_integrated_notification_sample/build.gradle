@@ -21,7 +21,7 @@ allprojects {
 }
 
 ext {
-    cashroulette_sdk_version = '2021.11.2'
+    cashroulette_sdk_version = '2021.12.7'
     ktxcore_version = '1.6.0'
     appcompat_version = '1.3.0'
     material_version = '1.4.0'

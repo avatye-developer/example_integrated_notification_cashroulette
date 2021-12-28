@@ -14,7 +14,10 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.avatye.cashroulette.ITicketBoxCount;
 import com.avatye.cashroulette.ITicketCount;
+import com.avatye.cashroulette.IUpdateNotification;
+import com.avatye.cashroulette.NotificationIntegrationSDK;
 
 
 public class NotificationService extends Service {
@@ -56,15 +59,30 @@ public class NotificationService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterNotification();
-        NotificationIntegrationSDK.unRegisterNotificationUpdateReceiver(this);
+        /** 등록된 리시버를 해제합니다. */
+        NotificationIntegrationSDK.unregisterNotificationUpdateReceiver(this);
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        /**
+         * 티켓박스 PendingIntent를 반환합니다.
+         * */
+        this.ticketBoxPendingIntent = NotificationIntegrationSDK.getTicketBoxPendingIntent(this);
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
+            /** Init Service */
             registerNotification();
 
+            /**
+             * 파트너사의 '알림창 상태바'에 표시되는 소유티켓수량, 받을 수 있는 티켓, 박스의 수량, 캐시룰렛 '알림창 상태바' 상태값을 이벤트로 전달 합니다.
+             * 이벤트를 통해 전달되는 값을 통해 '알림창 상태바'의 정보를 갱신 할 수 있습니다.
+             * 사용중인 '알림창 상태바' 서비스에 등록 합니다.
+             */
             NotificationIntegrationSDK.registerNotificationUpdateReceiver(this, new IUpdateNotification() {
                 @Override
                 public void onTicketChanged() {
@@ -78,14 +96,13 @@ public class NotificationService extends Service {
                 }
             });
         }
-
         return START_STICKY;
     }
 
 
     private void registerNotification() {
-        // get CashRoulette enable
-        cashRouletteNotificationEnabled = NotificationIntegrationSDK.getSDKNotificationEnabled()
+        /** 캐시룰렛의 '알림창 상태바' 사용 여부를 반환 합니다.*/
+        cashRouletteNotificationEnabled = NotificationIntegrationSDK.getSDKNotificationEnabled();
         startForeground(notificationID, makeNotificationBuilder().build());
     }
 
@@ -140,7 +157,7 @@ public class NotificationService extends Service {
         // region {Ticket}
         rv.setImageViewResource(
                 R.id.notification_ticket_condition_frame,
-                ticketCondition > 0 ? R.drawable.axcr_drawable_notification_ticket_condition_frame_on : R.drawable.axcr_drawable_notification_ticket_condition_frame_off
+                ticketCondition > 0 ? R.drawable.ic_ticket : R.drawable.ic_ticket_disable
         );
         rv.setTextViewText(R.id.notification_ticket_condition, String.valueOf(ticketCondition));
         // endregion
@@ -148,7 +165,7 @@ public class NotificationService extends Service {
         //region {TicketBox}
         rv.setImageViewResource(
                 R.id.notification_box_condition_frame,
-                ticketBoxCondition > 0 ? R.drawable.axcr_drawable_notification_box_condition_frame_on : R.drawable.axcr_drawable_notification_box_condition_frame_off
+                ticketBoxCondition > 0 ? R.drawable.ic_ticketbox : R.drawable.ic_ticketbox_disable
         );
         rv.setTextViewText(R.id.notification_box_condition, String.valueOf(ticketBoxCondition));
         rv.setOnClickPendingIntent(R.id.notification_box_condition_frame, ticketBoxPendingIntent);
@@ -159,6 +176,12 @@ public class NotificationService extends Service {
 
 
     private void checkTicketCondition(Boolean needUpdate) {
+        /**
+         * 티켓 정보를 반환합니다.
+         * balance: 소유 티켓 수
+         * condition: 받을 수 있는 티켓 수 (터치티켓 + 동영상티켓)
+         * condition <= 0 : Dimmed 이미지를 사용해 주세요.
+         */
         NotificationIntegrationSDK.getTicketCondition(new ITicketCount() {
             @Override
             public void callback(int balance, int condition) {
@@ -177,11 +200,16 @@ public class NotificationService extends Service {
     }
 
     private void checkTicketBoxCondition(IBoxCondition iBoxCondition) {
+        /**
+         * 티켓박스 정보를 반환합니다.
+         * condition: 받을 수 있는 티켓박스 수
+         * condition <= 0 : Dimmed 이미지를 사용해 주세요.
+         * pendingIntent: 아이콘 클릭시 처리할 동작이 전달 됩니다. (티켓박스 수령 화면 이동)
+         */
         NotificationIntegrationSDK.getTicketBoxCondition(new ITicketBoxCount() {
             @Override
-            public void callback(int condition, @Nullable PendingIntent pendingIntent) {
+            public void callback(int condition) {
                 ticketBoxCondition = condition;
-                ticketBoxPendingIntent = pendingIntent;
                 iBoxCondition.update();
             }
         });

@@ -164,6 +164,7 @@
             android:layout_centerInParent="true"
             android:text="파트너사 노티바 설정"
             android:textSize="15dp"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <Switch

@@ -39,6 +39,12 @@
             android:name="enable_ap_log"
             android:value="enable" />
         <!-- endregion -->
+
+        <!-- region { service } -->
+        <service android:name=".NotificationService"/>
+        <!-- endregion -->
+
+        <!-- region { activity } -->
         <activity
             android:name=".IntroActivity"
             android:screenOrientation="portrait">
@@ -51,6 +57,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
+        <!-- endregion -->
     </application>
 
 </manifest>

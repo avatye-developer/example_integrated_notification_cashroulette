@@ -35,6 +35,14 @@ class NotificationService : Service() {
         private const val notificationID: Int = 901
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        /**
+         * 티켓박스 PendingIntent를 반환합니다.
+         * */
+        this.ticketBoxPendingIntent = NotificationIntegrationSDK.getTicketBoxPendingIntent(context = this@NotificationService)
+    }
+
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
@@ -148,9 +156,9 @@ class NotificationService : Service() {
             this.setImageViewResource(
                 R.id.notification_ticket_condition_frame,
                 if (ticketCondition > 0) {
-                    R.drawable.axcr_drawable_notification_ticket_condition_frame_on
+                    R.drawable.ic_ticket
                 } else {
-                    R.drawable.axcr_drawable_notification_ticket_condition_frame_off
+                    R.drawable.ic_ticket_disable
                 }
             )
             this.setTextViewText(R.id.notification_ticket_condition, ticketCondition.toString())
@@ -160,9 +168,9 @@ class NotificationService : Service() {
             this.setImageViewResource(
                 R.id.notification_box_condition_frame,
                 if (ticketBoxCondition > 0) {
-                    com.avatye.cashroulette.R.drawable.axcr_drawable_notification_box_condition_frame_on
+                    R.drawable.ic_ticketbox
                 } else {
-                    com.avatye.cashroulette.R.drawable.axcr_drawable_notification_box_condition_frame_off
+                    R.drawable.ic_ticketbox_disable
                 }
             )
             this.setTextViewText(R.id.notification_box_condition, ticketBoxCondition.toString())
@@ -213,9 +221,8 @@ class NotificationService : Service() {
          * pendingIntent: 아이콘 클릭시 처리할 동작이 전달 됩니다. (티켓박스 수령 화면 이동)
          */
         NotificationIntegrationSDK.getTicketBoxCondition(listener = object : ITicketBoxCount {
-            override fun callback(condition: Int, pendingIntent: PendingIntent?) {
+            override fun callback(condition: Int) {
                 ticketBoxCondition = condition
-                ticketBoxPendingIntent = pendingIntent
                 callback()
             }
         })

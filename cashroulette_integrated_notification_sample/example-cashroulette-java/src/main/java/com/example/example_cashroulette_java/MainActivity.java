@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.avatye.cashroulette.CashRouletteSDK;
+import com.avatye.cashroulette.NotificationIntegrationSDK;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private RelativeLayout wrap_auth;
